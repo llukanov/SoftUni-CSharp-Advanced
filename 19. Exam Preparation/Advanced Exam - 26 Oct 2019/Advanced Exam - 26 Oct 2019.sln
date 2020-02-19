@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp", "DatingApp\DatingApp.csproj", "{57CEFDBC-2DBE-4038-A7B0-31BA612CD916}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookWorm", "BookWorm\BookWorm.csproj", "{3CEBA981-0DF5-4007-B2C5-2C218C7302B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookWorm", "BookWorm\BookWorm.csproj", "{3CEBA981-0DF5-4007-B2C5-2C218C7302B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rabbits", "03.Rabbits\Rabbits.csproj", "{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3CEBA981-0DF5-4007-B2C5-2C218C7302B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CEBA981-0DF5-4007-B2C5-2C218C7302B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CEBA981-0DF5-4007-B2C5-2C218C7302B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

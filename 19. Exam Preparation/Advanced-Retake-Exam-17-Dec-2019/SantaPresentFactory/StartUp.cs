@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SantaPresentFactory
 {
-    class Program
+    class StartUO
     {
         static void Main(string[] args)
         {
