@@ -1,119 +1,165 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace _03.SpaceStationEstablishment
+namespace SpaceStationEstablishment
 {
     class StartUp
     {
-        static char[,] matrix;
+        static char[][] matrix;
         static int spaceshipRow;
         static int spaceshipCol;
-        static StringBuilder @string;
+        static char symbol = '-';
+        static int rows;
 
-        public static void Main()
+        static bool isLost = false;
+        static bool isWin = false;
+        static int energy;
+
+        static void Main(string[] args)
         {
-            int energy = 0;
+            rows = int.Parse(Console.ReadLine());
+            ReadMatrix(rows);
+            FindPosition('S');
 
-            @string = new StringBuilder();
-
-            string initialString = Console.ReadLine();
-
-            int matrixSize = int.Parse(Console.ReadLine());
-            matrix = new char[matrixSize, matrixSize];
-
-            for (int row = 0; row < matrix.GetLength(0); row++)
+            while (true)
             {
-                string input = Console.ReadLine();
-
-                for (int col = 0; col < matrix.GetLength(1); col++)
+                if (energy < 50 && isLost == false)
                 {
-                    matrix[row, col] = input[col];
+                    string command = Console.ReadLine();
+                    Move(command);
+                }
+                else
+                {
+                    break;
+                }
+                
+            }
 
-                    if (matrix[row, col] == 'S')
+            PrintReport();
+            PrintMatrix();
+        }
+
+        private static void FindPosition(char letter)
+        {
+            for (int row = 0; row < matrix.Length; row++)
+            {
+                for (int col = 0; col < matrix[row].Length; col++)
+                {
+                    if (matrix[row][col] == letter)
                     {
                         spaceshipRow = row;
                         spaceshipCol = col;
                     }
                 }
             }
+        }
 
-            @string.Append(initialString);
-
-            while (true)
+        private static void ReadMatrix(int rows)
+        {
+            matrix = new char[rows][];
+            for (int row = 0; row < rows; row++)
             {
-                string command = Console.ReadLine();
-                switch (command)
-                {
-                    case "up":
-                        Move(-1, 0, ref energy);
-                        break;
-                    case "down":
-                        Move(1, 0, ref energy);
-                        break;
-                    case "left":
-                        Move(0, -1, ref energy); 
-                        break;
-                    case "right":
-                        Move(0, 1, energy);
-                        break;
-                }
+                char[] rowInput = Console.ReadLine().ToCharArray();
+                matrix[row] = rowInput;
             }
+        }
 
-            PrintMatrix();
+        private static void PrintReport()
+        {
+            if (isWin)
+            {
+                Console.WriteLine("Good news! Stephen succeeded in collecting enough star power!");
+            }
+            else if (isLost)
+            {
+                Console.WriteLine("Bad news, the spaceship went to the void.");
+            }
+            Console.WriteLine($"Star power collected: {energy}");
         }
 
         private static void PrintMatrix()
         {
-            Console.WriteLine(@string.ToString());
-            matrix[spaceshipRow, spaceshipCol] = 'P';
-
-            for (int row = 0; row < matrix.GetLength(0); row++)
+            if (energy >= 50)
             {
-                for (int col = 0; col < matrix.GetLength(1); col++)
+                matrix[spaceshipRow][spaceshipCol] = 'S';
+            }
+            
+            for (int row = 0; row < matrix.Length; row++)
+            {
+                for (int col = 0; col < matrix[row].Length; col++)
                 {
-                    Console.Write(matrix[row, col]);
+                    Console.Write($"{matrix[row][col]}");
                 }
-
                 Console.WriteLine();
             }
         }
 
-        private static void Move(int row, int col, ref energy)
+        private static bool IsValidPostion(int row, int col)
         {
-            if (spaceshipRow + row >= 0
-                && spaceshipRow + row < matrix.GetLength(0)
-                && spaceshipCol + col >= 0
-                && spaceshipCol + col < matrix.GetLength(1))
+            return row >= 0 && row < matrix.Length && col >= 0 && col < matrix[row].Length;
+        }
+
+        private static void ReplaceSymbol(int row, int col)
+        {
+            matrix[row][col] = symbol;
+        }
+
+        private static void Move(string direction)
+        {
+            switch (direction)
             {
-                if (matrix[spaceshipRow, spaceshipCol] == 'S')
-                {
-                    matrix[spaceshipRow, spaceshipCol] = '-';
-                }
-
-                spaceshipRow += row;
-                spaceshipCol += col;
-
-                char cell = matrix[spaceshipRow, spaceshipCol];
-
-                if (char.IsDigit(cell))
-                {
-                    energy =
-                    @string.Append(cell);
-                    matrix[spaceshipRow, spaceshipCol] = '-';
-                }
-
-                matrix[spaceshipRow, spaceshipCol] = 'P';
-            }
-            else
-            {
-                @string.Remove(@string.Length - 1, 1);
+                case "up":
+                    MoveOn(-1, 0);
+                    break;
+                case "down":
+                    MoveOn(1, 0);
+                    break;
+                case "left":
+                    MoveOn(0, -1);
+                    break;
+                case "right":
+                    MoveOn(0, 1);
+                    break;
+                default:
+                    break;
             }
         }
 
-        private static bool IsValid(int row, int col)
+        private static void MoveOn(int row, int col)
         {
-            return spaceshipRow + row >= 0 && spaceshipRow + row < matrix.GetLength(0) &&
-                   spaceshipCol + col >= 0 && spaceshipCol + col < matrix.GetLength(1);
+            if (IsValidPostion(spaceshipRow + row, spaceshipCol + col))
+            {
+                ReplaceSymbol(spaceshipRow, spaceshipCol);
+                spaceshipRow += row;
+                spaceshipCol += col;
+
+                if (char.IsDigit(matrix[spaceshipRow][spaceshipCol]))
+                {
+                    energy += int.Parse(matrix[spaceshipRow][spaceshipCol].ToString());
+                    ReplaceSymbol(spaceshipRow, spaceshipCol);
+                    IsCollectEnoughPower();
+                }
+                else if (matrix[spaceshipRow][spaceshipCol] == 'O')
+                {
+                    ReplaceSymbol(spaceshipRow, spaceshipCol);
+                    FindPosition('O');
+                    ReplaceSymbol(spaceshipRow, spaceshipCol);
+                }
+            }
+            else
+            {
+                isLost = true;
+            }
+        }
+
+        private static void IsCollectEnoughPower()
+        {
+            if (energy >= 50)
+            {
+                isWin = true;
+            }
         }
     }
 }

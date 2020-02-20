@@ -11,7 +11,6 @@ namespace SeashellTreasure
         static int GullyRow;
         static int GullyCol;
         static char symbol = '-';
-
         static List<char> collectedSeashells = new List<char>();
 
         static void Main(string[] args)
