@@ -6,152 +6,132 @@ namespace BookWorm
 {
     public class StartUP
     {
+        static int rows;
+        static char[][] matrix;
+        static int heroRow;
+        static int heroCol;
+        static char symbol = '-';
+        static char heroSymbol = 'P';
+
+        static string initialString;
+        static Stack<char> word;
+
+
         static void Main(string[] args)
         {
-            char[] initialWord = Console.ReadLine()
-                .ToCharArray();
-            Stack<char> word = new Stack<char>(initialWord);
-            int n = int.Parse(Console.ReadLine());
-            char[][] field = new char[n][];
+            initialString = Console.ReadLine();
+            word = new Stack<char>(initialString);
 
-            int playerRow = -1;
-            int playerCol = -1;
-            bool playerPositionFound = false;
+            rows = int.Parse(Console.ReadLine());
 
-            InitialiseField(n, field, ref playerRow, ref playerCol, ref playerPositionFound);
+            ReadMatrix(rows);
+            FindPosition('P');
 
             string command = Console.ReadLine();
             while (command != "end")
             {
-                if (command == "up")
-                {
-                    if (playerRow - 1 >= 0)
-                    {
-                        playerRow--;
-                        char symbol = field[playerRow][playerCol];
-
-                        if (Char.IsLetter(symbol))
-                        {
-                            word.Push(symbol);
-                        }
-
-                        field[playerRow][playerCol] = 'P';
-                        field[playerRow + 1][playerCol] = '-';
-                    }
-                    else
-                    {
-                        Punish(word);
-                    }
-                }
-                else if (command == "down")
-                {
-                    if (playerRow + 1 < n)
-                    {
-                        playerRow++;
-                        char symbol = field[playerRow][playerCol];
-
-                        if (Char.IsLetter(symbol))
-                        {
-                            word.Push(symbol);
-                        }
-
-                        field[playerRow][playerCol] = 'P';
-                        field[playerRow - 1][playerCol] = '-';
-                    }
-                    else
-                    {
-                        Punish(word);
-                    }
-                }
-                else if (command == "left")
-                {
-                    if (playerCol - 1 >= 0)
-                    {
-                        playerCol--;
-                        char symbol = field[playerRow][playerCol];
-
-                        if (Char.IsLetter(symbol))
-                        {
-                            word.Push(symbol);
-                        }
-
-                        field[playerRow][playerCol] = 'P';
-                        field[playerRow][playerCol + 1] = '-';
-                    }
-                    else
-                    {
-                        Punish(word);
-                    }
-                }
-                else if (command == "right")
-                {
-                    if (playerCol + 1 < n)
-                    {
-                        playerCol++;
-                        char symbol = field[playerRow][playerCol];
-
-                        if (Char.IsLetter(symbol))
-                        {
-                            word.Push(symbol);
-                        }
-
-                        field[playerRow][playerCol] = 'P';
-                        field[playerRow][playerCol - 1] = '-';
-                    }
-                    else
-                    {
-                        Punish(word);
-                    }
-                }
+                Move(command);
 
                 command = Console.ReadLine();
             }
 
-            Console.WriteLine(String.Join("", word.Reverse()));
-            PrintField(field);
+            PrintReport();
+            PrintMatrix();
         }
 
-        private static void PrintField(char[][] field)
+        private static void ReadMatrix(int rows)
         {
-            for (int row = 0; row < field.Length; row++)
+            matrix = new char[rows][];
+            for (int row = 0; row < rows; row++)
             {
-                for (int col = 0; col < field[row].Length; col++)
+                char[] currentRow = Console.ReadLine()
+                    .ToCharArray();
+                matrix[row] = currentRow;
+            }
+        }
+
+        private static void FindPosition(char letter)
+        {
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < matrix[row].Length; col++)
                 {
-                    Console.Write(field[row][col]);
+                    if (matrix[row][col] == letter)
+                    {
+                        heroRow = row;
+                        heroCol = col;
+                    }
+                }
+            }
+        }
+
+        private static void Move(string direction)
+        {
+            switch (direction)
+            {
+                case "up":
+                    MoveOn(-1, 0);
+                    break;
+                case "down":
+                    MoveOn(1, 0);
+                    break;
+                case "left":
+                    MoveOn(0, -1);
+                    break;
+                case "right":
+                    MoveOn(0, 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void MoveOn(int row, int col)
+        {
+            if (IsValidPostion(heroRow + row, heroCol + col))
+            {
+                heroRow += row;
+                heroCol += col;
+
+                char currentSymbol = matrix[heroRow][heroCol];
+                if (char.IsLetter(currentSymbol))
+                {
+                    word.Push(currentSymbol);
+                }
+
+                matrix[heroRow][heroCol] = heroSymbol;
+                matrix[heroRow - row][heroCol - col] = symbol;
+            }
+            else
+            {
+                if (word.Any())
+                {
+                    word.Pop();
+                }
+            }
+        }
+
+        private static void PrintReport()
+        {
+            string wordNew = string.Join(string.Empty, word.Reverse());
+            Console.WriteLine(wordNew);
+        }
+
+        private static void PrintMatrix()
+        {
+            for (int row = 0; row < matrix.Length; row++)
+            {
+                for (int col = 0; col < matrix[row].Length; col++)
+                {
+                    Console.Write($"{matrix[row][col]}");
                 }
                 Console.WriteLine();
             }
         }
 
-        private static void Punish(Stack<char> word)
+        private static bool IsValidPostion(int row, int col)
         {
-            if (word.Count > 0)
-            {
-                word.Pop();
-            }
-        }
-
-        private static void InitialiseField(int n, char[][] field, ref int playerRow, ref int playerCol, ref bool playerPositionFound)
-        {
-            for (int row = 0; row < n; row++)
-            {
-                char[] currentRow = Console.ReadLine()
-                    .ToCharArray();
-
-                if (!playerPositionFound)
-                {
-                    for (int col = 0; col < currentRow.Length; col++)
-                    {
-                        if (currentRow[col] == 'P')
-                        {
-                            playerRow = row;
-                            playerCol = col;
-                            playerPositionFound = true;
-                        }
-                    }
-                }
-                field[row] = currentRow;
-            }
+            return row >= 0 && row < matrix.Length && col >= 0 && col < matrix[row].Length;
         }
     }
 }

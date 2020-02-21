@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookWorm", "BookWorm\BookWo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rabbits", "03.Rabbits\Rabbits.csproj", "{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceStationEstablishment", "..\AdvancedExam-23-Jun-2019\03.SpaceStationEstablishment\SpaceStationEstablishment.csproj", "{7F22700C-3080-466F-8D11-DF3BDC4A09FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CB476B7-2EEF-438A-AA2E-AEEFE2BFB44A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F22700C-3080-466F-8D11-DF3BDC4A09FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F22700C-3080-466F-8D11-DF3BDC4A09FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F22700C-3080-466F-8D11-DF3BDC4A09FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F22700C-3080-466F-8D11-DF3BDC4A09FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
